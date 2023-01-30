@@ -1,1 +1,1 @@
-Thanks for looking at my GitHub
+Thanks for looking at my Portfolio project
