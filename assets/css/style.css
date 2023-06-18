@@ -35,12 +35,12 @@ body::before {
 }
 
 a {
-  color: #f9d113;
+  color: #18d26e;
   text-decoration: none;
 }
 
 a:hover {
-  color: #fff000;
+  color: #35e888;
   text-decoration: none;
 }
 
@@ -94,7 +94,7 @@ h6 {
 
 #header h2 span {
   color: #fff;
-  border-bottom: 2px solid #f9d113;
+  border-bottom: 2px solid #18d26e;
   padding-bottom: 6px;
 }
 
@@ -123,7 +123,7 @@ h6 {
 }
 
 #header .social-links a:hover {
-  background: #f9d113;
+  background: #18d26e;
 }
 
 @media (max-width: 992px) {
@@ -242,7 +242,7 @@ h6 {
   height: 2px;
   bottom: -4px;
   left: 0;
-  background-color: #f9d113;
+  background-color: #18d26e;
   visibility: hidden;
   width: 0px;
   transition: all 0.3s ease-in-out 0s;
@@ -386,7 +386,7 @@ section .container {
   width: 120px;
   height: 1px;
   display: inline-block;
-  background: #fff000;
+  background: #35e888;
   margin: 4px 10px;
 }
 
@@ -406,7 +406,7 @@ section .container {
 .about-me .content h3 {
   font-weight: 700;
   font-size: 26px;
-  color: #f9d113;
+  color: #18d26e;
 }
 
 .about-me .content ul {
@@ -427,7 +427,7 @@ section .container {
 .about-me .content ul i {
   font-size: 16px;
   margin-right: 5px;
-  color: #f9d113;
+  color: #18d26e;
   line-height: 0;
 }
 
@@ -458,7 +458,7 @@ section .container {
   font-size: 24px;
   background: rgba(255, 255, 255, 0.1);
   padding: 12px;
-  color: #f9d113;
+  color: #18d26e;
   border-radius: 50px;
   line-height: 0;
 }
@@ -510,7 +510,7 @@ section .container {
   width: 1px;
   height: 10px;
   transition: 0.9s;
-  background-color: #f9d113;
+  background-color: #18d26e;
 }
 
 /*--------------------------------------------------------------
@@ -621,7 +621,7 @@ section .container {
 }
 
 .testimonials .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #f9d113;
+  background-color: #18d26e;
 }
 
 /*--------------------------------------------------------------
@@ -648,7 +648,7 @@ section .container {
   font-weight: 600;
   text-transform: uppercase;
   font-family: "Poppins", sans-serif;
-  color: #f9d113;
+  color: #18d26e;
   margin-bottom: 10px;
 }
 
@@ -681,8 +681,8 @@ section .container {
   border-radius: 50px;
   left: -9px;
   top: 0;
-  background: #f9d113;
-  border: 2px solid #f9d113;
+  background: #18d26e;
+  border: 2px solid #18d26e;
 }
 
 /*--------------------------------------------------------------
@@ -700,7 +700,7 @@ section .container {
   margin: 0 auto;
   width: 64px;
   height: 64px;
-  background: #f9d113;
+  background: #18d26e;
   border-radius: 5px;
   transition: all 0.3s ease-out 0s;
   display: flex;
@@ -745,8 +745,8 @@ section .container {
 }
 
 .services .icon-box:hover {
-  background: #f9d113;
-  border-color: #f9d113;
+  background: #18d26e;
+  border-color: #18d26e;
 }
 
 .services .icon-box:hover .icon {
@@ -754,11 +754,11 @@ section .container {
 }
 
 .services .icon-box:hover .icon i {
-  color: #f9d113;
+  color: #18d26e;
 }
 
 .services .icon-box:hover .icon::before {
-  background: #fff000;
+  background: #35e888;
 }
 
 .services .icon-box:hover h4 a,
@@ -799,7 +799,7 @@ section .container {
 
 .portfolio #portfolio-flters li:hover,
 .portfolio #portfolio-flters li.filter-active {
-  background: #f9d113;
+  background: #18d26e;
 }
 
 .portfolio #portfolio-flters li:last-child {
@@ -899,7 +899,7 @@ section .container {
 }
 
 .portfolio .portfolio-wrap .portfolio-links a:hover {
-  color: #fff000;
+  color: #35e888;
 }
 
 .portfolio .portfolio-wrap:hover::before {
@@ -993,7 +993,7 @@ section .container {
 }
 
 .portfolio-details .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: #f9d113;
+  background-color: #18d26e;
 }
 
 /*--------------------------------------------------------------
@@ -1008,7 +1008,7 @@ section .container {
 
 .contact .info-box i.bx {
   font-size: 24px;
-  color: #f9d113;
+  color: #18d26e;
   border-radius: 50%;
   padding: 14px;
   float: left;
@@ -1045,7 +1045,7 @@ section .container {
 }
 
 .contact .info-box .social-links a:hover {
-  color: #f9d113;
+  color: #18d26e;
 }
 
 .contact .php-email-form {
@@ -1069,7 +1069,7 @@ section .container {
 .contact .php-email-form .sent-message {
   display: none;
   background: rgba(255, 255, 255, 0.08);
-  background: #f9d113;
+  background: #18d26e;
   text-align: center;
   padding: 15px;
   font-weight: 600;
@@ -1089,7 +1089,7 @@ section .container {
   width: 24px;
   height: 24px;
   margin: 0 10px -6px 0;
-  border: 3px solid #f9d113;
+  border: 3px solid #18d26e;
   border-top-color: #eee;
   -webkit-animation: animate-loading 1s linear infinite;
   animation: animate-loading 1s linear infinite;
@@ -1132,7 +1132,7 @@ section .container {
 }
 
 .contact .php-email-form button[type=submit] {
-  background: #f9d113;
+  background: #18d26e;
   border: 0;
   padding: 10px 30px;
   color: #fff;
@@ -1141,7 +1141,7 @@ section .container {
 }
 
 .contact .php-email-form button[type=submit]:hover {
-  background: #f9ec18;
+  background: #35e888;
 }
 
 @-webkit-keyframes animate-loading {
@@ -1167,7 +1167,7 @@ section .container {
 /*--------------------------------------------------------------
 # Credits
 --------------------------------------------------------------*/
-.credits {
+/* .credits {
   position: fixed;
   right: 0;
   left: 0;
@@ -1188,10 +1188,10 @@ section .container {
 }
 
 .credits a {
-  color: #f9d113;
+  color: #18d26e;
   transition: 0.3s;
 }
 
 .credits a:hover {
   color: #fff;
-}
+} */
