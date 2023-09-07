@@ -1,1 +1,1 @@
-Thanks for looking at my Portfolio project.
+Thanks for looking at my Portfolio project
