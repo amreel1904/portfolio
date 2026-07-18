@@ -1,246 +1,184 @@
-(function() {
+/**
+* Amreel Nuqman — Portfolio
+* Editorial dev-native (dark). Continuous-scroll interactions.
+*/
+(function () {
   "use strict";
 
-  /**
-   * Easy selector helper function
-   */
-  const select = (el, all = false) => {
-    el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
-    }
-  }
+  const select = (el, all = false) =>
+    all ? [...document.querySelectorAll(el)] : document.querySelector(el);
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
   /**
-   * Easy event listener function
+   * Sticky header background after scrolling past the top
    */
-  const on = (type, el, listener, all = false) => {
-    let selectEl = select(el, all)
-
-    if (selectEl) {
-      if (all) {
-        selectEl.forEach(e => e.addEventListener(type, listener))
-      } else {
-        selectEl.addEventListener(type, listener)
-      }
-    }
-  }
-
-  /**
-   * Scrolls to an element with header offset
-   */
-  const scrollto = (el) => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
+  const header = select("#header");
+  const onScroll = () => {
+    if (header) header.classList.toggle("scrolled", window.scrollY > 24);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
   /**
    * Mobile nav toggle
    */
-  on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
-  })
+  const navbar = select("#navbar");
+  const navToggle = select(".mobile-nav-toggle");
+
+  const closeMobileNav = () => {
+    if (!navbar || !navbar.classList.contains("navbar-mobile")) return;
+    navbar.classList.remove("navbar-mobile");
+    if (navToggle) {
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.querySelector("i").classList.replace("bi-x", "bi-list");
+    }
+  };
+
+  if (navToggle) {
+    navToggle.addEventListener("click", function () {
+      const open = navbar.classList.toggle("navbar-mobile");
+      this.setAttribute("aria-expanded", open ? "true" : "false");
+      const icon = this.querySelector("i");
+      icon.classList.toggle("bi-list", !open);
+      icon.classList.toggle("bi-x", open);
+    });
+  }
 
   /**
-   * Scrool with ofset on links with a class name .scrollto
+   * Smooth-scroll nav links (with header offset) + close mobile menu
    */
-  on('click', '#navbar .nav-link', function(e) {
-    let section = select(this.hash)
-    if (section) {
-      e.preventDefault()
-
-      let navbar = select('#navbar')
-      let header = select('#header')
-      let sections = select('section', true)
-      let navlinks = select('#navbar .nav-link', true)
-
-      navlinks.forEach((item) => {
-        item.classList.remove('active')
-      })
-
-      this.classList.add('active')
-
-      if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
-      }
-
-      if (this.hash == '#header') {
-        header.classList.remove('header-top')
-        sections.forEach((item) => {
-          item.classList.remove('section-show')
-        })
-        return;
-      }
-
-      if (!header.classList.contains('header-top')) {
-        header.classList.add('header-top')
-        setTimeout(function() {
-          sections.forEach((item) => {
-            item.classList.remove('section-show')
-          })
-          section.classList.add('section-show')
-
-        }, 350);
-      } else {
-        sections.forEach((item) => {
-          item.classList.remove('section-show')
-        })
-        section.classList.add('section-show')
-      }
-
-      scrollto(this.hash)
-    }
-  }, true)
-
-  /**
-   * Activate/show sections on load with hash links
-   */
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      let initial_nav = select(window.location.hash)
-
-      if (initial_nav) {
-        let header = select('#header')
-        let navlinks = select('#navbar .nav-link', true)
-
-        header.classList.add('header-top')
-
-        navlinks.forEach((item) => {
-          if (item.getAttribute('href') == window.location.hash) {
-            item.classList.add('active')
-          } else {
-            item.classList.remove('active')
-          }
-        })
-
-        setTimeout(function() {
-          initial_nav.classList.add('section-show')
-        }, 350);
-
-        scrollto(window.location.hash)
-      }
-    }
+  select("#navbar .nav-link", true).forEach((link) => {
+    link.addEventListener("click", function (e) {
+      const target = select(this.hash);
+      if (!target) return;
+      e.preventDefault();
+      closeMobileNav();
+      const top =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        (this.hash === "#hero" ? 0 : header.offsetHeight);
+      window.scrollTo({
+        top,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    });
   });
 
   /**
-   * Skills animation
+   * Scrollspy — highlight the nav link for the section in view
    */
-  let skilsContent = select('.skills-content');
-  if (skilsContent) {
-    new Waypoint({
-      element: skilsContent,
-      offset: '80%',
-      handler: function(direction) {
-        let progress = select('.progress .progress-bar', true);
-        progress.forEach((el) => {
-          el.style.width = el.getAttribute('aria-valuenow') + '%'
+  const navLinks = select("#navbar .nav-link", true);
+  const sections = navLinks
+    .map((l) => select(l.hash))
+    .filter(Boolean);
+
+  if ("IntersectionObserver" in window && sections.length) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = "#" + entry.target.id;
+          navLinks.forEach((l) =>
+            l.classList.toggle("active", l.hash === id)
+          );
         });
-      }
-    })
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => spy.observe(s));
   }
+
+  /**
+   * Reveal on scroll — content is visible by default; this only enhances.
+   */
+  const reveals = select(".reveal", true);
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    reveals.forEach((el) => el.classList.add("in-view"));
+  } else {
+    const revealObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry, i) => {
+          if (!entry.isIntersecting) return;
+          // small stagger for grouped items
+          const delay = Math.min(i * 60, 240);
+          setTimeout(() => entry.target.classList.add("in-view"), delay);
+          obs.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+    );
+    reveals.forEach((el) => revealObserver.observe(el));
+    // Safety: if anything is still hidden after load (e.g. above the fold), show it.
+    window.addEventListener("load", () => {
+      reveals.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight) el.classList.add("in-view");
+      });
+    });
+  }
+
+  /**
+   * Footer year
+   */
+  const yearEl = select("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /**
    * Testimonials slider
    */
-  new Swiper('.testimonials-slider', {
-    speed: 600,
-    loop: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
-    },
-    slidesPerView: 'auto',
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    },
-    breakpoints: {
-      320: {
-        slidesPerView: 1,
-        spaceBetween: 20
+  if (typeof Swiper !== "undefined" && select(".testimonials-slider")) {
+    new Swiper(".testimonials-slider", {
+      speed: 600,
+      loop: true,
+      autoplay: prefersReducedMotion
+        ? false
+        : { delay: 4000, disableOnInteraction: false },
+      slidesPerView: 1,
+      spaceBetween: 20,
+      pagination: { el: ".swiper-pagination", clickable: true },
+      breakpoints: {
+        768: { slidesPerView: 2 },
+        1200: { slidesPerView: 3 },
       },
-
-      1200: {
-        slidesPerView: 3,
-        spaceBetween: 20
-      }
-    }
-  });
+    });
+  }
 
   /**
-   * Porfolio isotope and filter
+   * Portfolio isotope + filter
    */
-  window.addEventListener('load', () => {
-    let portfolioContainer = select('.portfolio-container');
-    if (portfolioContainer) {
-      let portfolioIsotope = new Isotope(portfolioContainer, {
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
+  window.addEventListener("load", () => {
+    const container = select(".portfolio-container");
+    if (container && typeof Isotope !== "undefined") {
+      const iso = new Isotope(container, {
+        itemSelector: ".portfolio-item",
+        layoutMode: "fitRows",
       });
 
-      let portfolioFilters = select('#portfolio-flters li', true);
-
-      on('click', '#portfolio-flters li', function(e) {
-        e.preventDefault();
-        portfolioFilters.forEach(function(el) {
-          el.classList.remove('filter-active');
+      const filters = select("#portfolio-flters li", true);
+      filters.forEach((f) => {
+        f.addEventListener("click", function () {
+          filters.forEach((el) => el.classList.remove("filter-active"));
+          this.classList.add("filter-active");
+          iso.arrange({ filter: this.getAttribute("data-filter") });
         });
-        this.classList.add('filter-active');
-
-        portfolioIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-      }, true);
-    }
-
-  });
-
-  /**
-   * Initiate portfolio lightbox 
-   */
-  const portfolioLightbox = GLightbox({
-    selector: '.portfolio-lightbox'
-  });
-
-  /**
-   * Initiate portfolio details lightbox 
-   */
-  const portfolioDetailsLightbox = GLightbox({
-    selector: '.portfolio-details-lightbox',
-    width: '90%',
-    height: '90vh'
-  });
-
-  /**
-   * Portfolio details slider
-   */
-  new Swiper('.portfolio-details-slider', {
-    speed: 400,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
+      });
     }
   });
 
   /**
-   * Initiate Pure Counter 
+   * Portfolio lightbox
    */
-  new PureCounter();
+  if (typeof GLightbox !== "undefined") {
+    GLightbox({ selector: ".portfolio-lightbox" });
+  }
 
-})()
+  /**
+   * Counters
+   */
+  if (typeof PureCounter !== "undefined") {
+    new PureCounter();
+  }
+})();
