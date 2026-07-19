@@ -181,26 +181,26 @@
   }
 
   /**
-   * Portfolio isotope + filter
+   * Portfolio filter (native CSS Grid — no layout library).
+   * Items stay in normal grid flow; filtering just toggles [hidden],
+   * so the grid re-flows itself and always fills the container width.
    */
-  window.addEventListener("load", () => {
+  (() => {
     const container = select(".portfolio-container");
-    if (container && typeof Isotope !== "undefined") {
-      const iso = new Isotope(container, {
-        itemSelector: ".portfolio-item",
-        layoutMode: "fitRows",
-      });
-
-      const filters = select("#portfolio-flters li", true);
-      filters.forEach((f) => {
-        f.addEventListener("click", function () {
-          filters.forEach((el) => el.classList.remove("filter-active"));
-          this.classList.add("filter-active");
-          iso.arrange({ filter: this.getAttribute("data-filter") });
+    if (!container) return;
+    const items = select(".portfolio-item", true);
+    const filters = select("#portfolio-flters li", true);
+    filters.forEach((f) => {
+      f.addEventListener("click", function () {
+        filters.forEach((el) => el.classList.remove("filter-active"));
+        this.classList.add("filter-active");
+        const selector = this.getAttribute("data-filter"); // "*" | ".filter-app" | ".filter-web"
+        items.forEach((item) => {
+          item.hidden = selector !== "*" && !item.matches(selector);
         });
       });
-    }
-  });
+    });
+  })();
 
   /**
    * Portfolio lightbox

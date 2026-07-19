@@ -86,10 +86,17 @@ amber warmth.
 | `--accent-strong` | `#8a4708` | Accent hover (darker in light) |
 | `--on-accent` | `#ffffff` | Text on accent-filled button |
 
-**Constant across themes:** portfolio `figcaption` scrims stay dark rgba — they sit
-over photos and need dark for white-caption legibility regardless of page theme.
-Themed effects (`--header-bg`, `--mobilenav-bg`, `--focus-ring`, `--hero-glow-*`)
-are tokens that flip. The one warm-amber identity holds in both modes; only the
+**Portfolio caption scrim flips with the theme.** The `figcaption` scrim and its
+caption text are a matched pair that both flip: **dark** scrim + **light** caption in
+dark mode; **warm-paper** scrim (`rgba(247,245,241,…)`) + **dark** caption in light
+mode. Tokens: `--scrim` / `--scrim-hover` (whole-gradient) and `--on-scrim` /
+`--on-scrim-muted` (caption ink). Rationale: pinning the scrim dark in light mode
+(the earlier plan) forced a dark band into a paper page *and* left the theme-flipped
+`--ink` caption text dark-on-dark → invisible. Flipping both keeps the caption
+readable and lets the light theme stay light end-to-end.
+
+Other themed effects (`--header-bg`, `--mobilenav-bg`, `--focus-ring`,
+`--hero-glow-*`) also flip. The one warm-amber identity holds in both modes; only the
 link/heading accent darkens for contrast — the button keeps its amber fill.
 
 ---

@@ -19,6 +19,14 @@
   --ink-muted: #a0a6b0;
   --ink-faint: #8a909b;
 
+  /* Portfolio caption over its image scrim (see DESIGN.md §2). Scrim AND
+     text flip together: dark scrim + light text here, light (paper) scrim
+     + dark text in the light theme below. */
+  --on-scrim: #f4f5f7;
+  --on-scrim-muted: #cbd0d7;
+  --scrim: linear-gradient(to top, rgba(14, 15, 18, 0.9), rgba(14, 15, 18, 0.05) 60%, transparent);
+  --scrim-hover: linear-gradient(to top, rgba(14, 15, 18, 0.95), rgba(14, 15, 18, 0.35) 70%, rgba(14, 15, 18, 0.15));
+
   /* Accent (warm amber) */
   --accent: #f2a93b;
   --accent-strong: #ffb84d;
@@ -65,6 +73,12 @@
   --accent: #a5560a;
   --accent-strong: #8a4708;
   --on-accent: #ffffff;
+
+  /* Scrim flips to warm paper; caption text flips to dark ink to match. */
+  --on-scrim: #1a1c20;
+  --on-scrim-muted: #55595f;
+  --scrim: linear-gradient(to top, rgba(247, 245, 241, 0.94), rgba(247, 245, 241, 0.12) 60%, transparent);
+  --scrim-hover: linear-gradient(to top, rgba(247, 245, 241, 0.98), rgba(247, 245, 241, 0.5) 70%, rgba(247, 245, 241, 0.25));
 
   --header-bg: rgba(247, 245, 241, 0.85);
   --mobilenav-bg: rgba(247, 245, 241, 0.97);
@@ -907,12 +921,23 @@ ul {
 }
 
 .portfolio-container {
-  margin-inline: -0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 across → 2×3 for six items */
+  gap: 1.75rem;
 }
 
 .portfolio-item {
-  padding: 0.75rem;
-  margin-bottom: 0;
+  min-width: 0;
+}
+
+.portfolio-item[hidden] {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .portfolio-container {
+    grid-template-columns: 1fr; /* single column on phones */
+  }
 }
 
 .portfolio-card {
@@ -943,24 +968,25 @@ ul {
   flex-direction: column;
   justify-content: flex-end;
   padding: 1.25rem;
-  background: linear-gradient(to top, rgba(14, 15, 18, 0.9), rgba(14, 15, 18, 0.05) 60%, transparent);
+  background: var(--scrim);
   transition: background 0.3s var(--ease-out);
 }
 
 .portfolio-card:hover figcaption,
 .portfolio-card:focus-within figcaption {
-  background: linear-gradient(to top, rgba(14, 15, 18, 0.95), rgba(14, 15, 18, 0.35) 70%, rgba(14, 15, 18, 0.15));
+  background: var(--scrim-hover);
 }
 
 .portfolio-meta h4 {
   font-size: 1.05rem;
   margin-bottom: 0.2rem;
+  color: var(--on-scrim);
 }
 
 .portfolio-meta p {
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  color: var(--ink-faint);
+  color: var(--on-scrim-muted);
   margin: 0;
 }
 
