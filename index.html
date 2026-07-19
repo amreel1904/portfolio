@@ -5,7 +5,19 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Amreel Nuqman | Fullstack Developer & UI/UX Designer</title>
+  <!-- Set theme before paint (no flash). Defaults to dark. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
+  <title>Amreel UX</title>
   <meta content="Amreel Nuqman – Associate Fullstack Developer and UI/UX designer based in Perak, Malaysia. Fullstack developer who designs: intuitive, user-first products. See the work and get in touch." name="description">
   <meta content="Amreel Nuqman, fullstack developer, UI/UX designer, Malaysia, portfolio, Figma, web developer, Java, PHP, JavaScript" name="keywords">
 
@@ -67,6 +79,8 @@
           <li><a class="nav-link" href="#portfolio"><span class="nav-num">04</span> Work</a></li>
           <li><a class="nav-link" href="#contact"><span class="nav-num">05</span> Contact</a></li>
         </ul>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme"
+          title="Switch to light theme"><i class="bi bi-sun" aria-hidden="true"></i></button>
         <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
           aria-controls="navbar"><i class="bi bi-list"></i></button>
       </nav>

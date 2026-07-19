@@ -24,6 +24,15 @@
   --accent-strong: #ffb84d;
   --on-accent: #0e0f12;
 
+  /* Themed effects (flip with theme) */
+  --header-bg: rgba(14, 15, 18, 0.82);
+  --mobilenav-bg: rgba(14, 15, 18, 0.97);
+  --focus-ring: rgba(242, 169, 59, 0.15);
+  --hero-glow-1: rgba(242, 169, 59, 0.10);
+  --hero-glow-2: rgba(90, 110, 160, 0.08);
+
+  color-scheme: dark;
+
   /* Type */
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-sans: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -38,6 +47,32 @@
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 0.4s;
+}
+
+/* Light theme — warm paper. Same token names, re-valued.
+   Accent darkens for AA contrast on light surfaces (link text ~4.9:1,
+   white-on-accent button ~5.3:1); the identity stays one warm amber. */
+:root[data-theme="light"] {
+  --bg: #f7f5f1;
+  --surface: #ffffff;
+  --surface-2: #efece6;
+  --border: #e0dcd3;
+
+  --ink: #1a1c20;
+  --ink-muted: #55595f;
+  --ink-faint: #6b7079;
+
+  --accent: #a5560a;
+  --accent-strong: #8a4708;
+  --on-accent: #ffffff;
+
+  --header-bg: rgba(247, 245, 241, 0.85);
+  --mobilenav-bg: rgba(247, 245, 241, 0.97);
+  --focus-ring: rgba(165, 86, 10, 0.20);
+  --hero-glow-1: rgba(242, 169, 59, 0.16);
+  --hero-glow-2: rgba(120, 140, 190, 0.10);
+
+  color-scheme: light;
 }
 
 /*--------------------------------------------------------------
@@ -61,6 +96,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
 }
 
 /* Subtle glow behind the hero, not a photo */
@@ -71,9 +107,10 @@ body::before {
   height: 100vh;
   z-index: -1;
   background:
-    radial-gradient(60rem 40rem at 78% -10%, rgba(242, 169, 59, 0.10), transparent 60%),
-    radial-gradient(50rem 40rem at 0% 0%, rgba(90, 110, 160, 0.08), transparent 55%),
+    radial-gradient(60rem 40rem at 78% -10%, var(--hero-glow-1), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 0%, var(--hero-glow-2), transparent 55%),
     var(--bg);
+  transition: background-color 0.3s var(--ease-out);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -215,7 +252,7 @@ ul {
 }
 
 .site-header.scrolled {
-  background: rgba(14, 15, 18, 0.82);
+  background: var(--header-bg);
   backdrop-filter: blur(10px);
   border-bottom-color: var(--border);
 }
@@ -243,10 +280,49 @@ ul {
   color: var(--accent);
 }
 
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .navbar ul {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+/* Theme toggle — mono icon button, visible in header on all breakpoints. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--ink-muted);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--border);
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* Crossfade the icon on theme change without spin/bounce (quiet motion). */
+.theme-toggle i {
+  transition: opacity 0.2s var(--ease-out);
 }
 
 .nav-link {
@@ -1025,7 +1101,7 @@ ul {
 .field textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(242, 169, 59, 0.15);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .hp {
@@ -1108,7 +1184,7 @@ ul {
     flex-direction: column;
     justify-content: center;
     gap: 1.25rem;
-    background: rgba(14, 15, 18, 0.97);
+    background: var(--mobilenav-bg);
     backdrop-filter: blur(8px);
     transform: translateX(100%);
     transition: transform 0.35s var(--ease-out);

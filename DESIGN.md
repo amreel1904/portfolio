@@ -61,6 +61,37 @@ reflex). Warm-on-cool gives contrast and personality while staying professional.
 - `--on-accent` on `--accent` (button) → high contrast, passes for the label.
 - Placeholder text = `--ink-faint`, not the browser default gray.
 
+### Light theme (opt-in toggle)
+
+Dark remains the concept and the **default** (justified by the scene above). Light
+is an accommodation for daytime/high-glare readers and system-light users who ask
+for it, not a repositioning. It's a manual toggle in the header (sun in dark / moon
+in light); the choice persists in `localStorage`; first visit falls back to dark. An
+inline pre-paint script sets `data-theme` on `<html>` so there's no flash.
+
+Implemented as a `:root[data-theme="light"]` re-valuing of the **same token names** —
+no component CSS changed. Light is a **warm paper**, not clinical white, to echo the
+amber warmth.
+
+| Token | Light value | Notes |
+|---|---|---|
+| `--bg` | `#f7f5f1` | Warm paper |
+| `--surface` | `#ffffff` | Raised panels, cards, inputs |
+| `--surface-2` | `#efece6` | Hover / nested fills |
+| `--border` | `#e0dcd3` | Hairlines |
+| `--ink` | `#1a1c20` | Primary text |
+| `--ink-muted` | `#55595f` | Body de-emphasis |
+| `--ink-faint` | `#6b7079` | Meta/labels (≥14px bold or ≥18px only) |
+| `--accent` | `#a5560a` | **Darkened** amber — bright `#f2a93b` fails AA on white (~1.9:1); this reads ~4.9:1 as link text and ~5.3:1 white-on-accent for the button |
+| `--accent-strong` | `#8a4708` | Accent hover (darker in light) |
+| `--on-accent` | `#ffffff` | Text on accent-filled button |
+
+**Constant across themes:** portfolio `figcaption` scrims stay dark rgba — they sit
+over photos and need dark for white-caption legibility regardless of page theme.
+Themed effects (`--header-bg`, `--mobilenav-bg`, `--focus-ring`, `--hero-glow-*`)
+are tokens that flip. The one warm-amber identity holds in both modes; only the
+link/heading accent darkens for contrast — the button keeps its amber fill.
+
 ---
 
 ## 3. Typography
