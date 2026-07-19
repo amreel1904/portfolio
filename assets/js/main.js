@@ -48,6 +48,40 @@
   }
 
   /**
+   * Theme toggle (dark ⇄ light), persisted in localStorage.
+   * The inline <head> script has already set data-theme before first paint;
+   * here we sync the button's icon/label and wire the click.
+   */
+  const root = document.documentElement;
+  const themeToggle = select(".theme-toggle");
+
+  const syncThemeButton = (theme) => {
+    if (!themeToggle) return;
+    const label =
+      theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+    themeToggle.setAttribute("aria-label", label);
+    themeToggle.setAttribute("title", label);
+    const icon = themeToggle.querySelector("i");
+    if (icon) icon.className = theme === "dark" ? "bi bi-sun" : "bi bi-moon-stars";
+  };
+
+  syncThemeButton(root.getAttribute("data-theme") || "dark");
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const next =
+        root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {
+        /* storage unavailable (private mode) — theme still applies for the session */
+      }
+      syncThemeButton(next);
+    });
+  }
+
+  /**
    * Smooth-scroll nav links (with header offset) + close mobile menu
    */
   select("#navbar .nav-link", true).forEach((link) => {
